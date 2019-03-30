@@ -75,7 +75,7 @@ class MainVerticle : AbstractVerticle() {
     LOGGER.info("Starting gRPC Server...")
 
     val rpcServer = VertxServerBuilder
-      .forAddress(vertx, "localhost", 8080)
+      .forAddress(vertx, "localhost", 50051)
       .addService(service)
       .build()
 

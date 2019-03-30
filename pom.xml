@@ -247,7 +247,7 @@
                   <tag>${project.version}</tag>
                 </tags>
                 <ports>
-                  <port>8080</port>
+                  <port>50051</port>
                 </ports>
               </build>
               <run>

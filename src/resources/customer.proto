@@ -1,0 +1,31 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package tech.claudio.customer.domain;
+
+message CustomerFindRequest {
+  string id = 1;
+}
+
+message CustomerFindResponse {
+  string id = 1;
+  string name = 2;
+  string lastName = 3;
+  string document = 4;
+  string address = 5;
+  string city = 6;
+  string country = 7;
+}
+
+
+message Cryptogram {
+
+  string number = 1;
+  string mask = 2;
+
+}
+
+service CustomerService {
+
+  rpc findCustomer (CustomerFindRequest) returns (CustomerFindResponse);
+
+}

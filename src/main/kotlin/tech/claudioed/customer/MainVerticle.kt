@@ -28,6 +28,7 @@ class MainVerticle : AbstractVerticle() {
     val service = object : CustomerServiceGrpc.CustomerServiceImplBase() {
       override fun findCustomer(request: CustomerFindRequest,
                                 responseObserver: io.grpc.stub.StreamObserver<CustomerFindResponse>) {
+        LOGGER.info("Receiving request to find customer...")
         val query = JsonObject().put("_id", request.id)
         mongoClient.findOne("customers", query, null) {
           if (it.succeeded()) {
@@ -49,7 +50,7 @@ class MainVerticle : AbstractVerticle() {
 
       override fun createCustomer(request: CustomerCreateRequest,
                                   responseObserver: io.grpc.stub.StreamObserver<CustomerFindResponse>) {
-
+        LOGGER.info("Receiving request to create customer...")
         val customer = Customer(id = UUID.randomUUID().toString(), name = request.name, lastName = request.lastName, city = request.city, country = request.country, address = request.address, document = request.document, email = request.email)
         val data = JsonObject().put("id",customer.id).put("name",customer.name).put("lastName",customer.lastName).put("city",customer.city).put("country",customer.country)
           .put("address",customer.address).put("document",customer.document).put("email",customer.email)
@@ -61,6 +62,7 @@ class MainVerticle : AbstractVerticle() {
               .setCountry(customer.country).setCity(customer.city)
               .setEmail(customer.email).setLastName(customer.lastName)
               .build()
+            LOGGER.info("New customer was created.")
             responseObserver.onNext(response)
             responseObserver.onCompleted()
           }else{
@@ -70,12 +72,16 @@ class MainVerticle : AbstractVerticle() {
       }
     }
 
+    LOGGER.info("Starting gRPC Server...")
+
     val rpcServer = VertxServerBuilder
       .forAddress(vertx, "localhost", 8080)
       .addService(service)
       .build()
 
     rpcServer.start()
+
+    LOGGER.info("gRPC Server started successfully")
 
   }
 

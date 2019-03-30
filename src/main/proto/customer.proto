@@ -1,6 +1,6 @@
 syntax = "proto3";
 option java_multiple_files = true;
-package tech.claudio.customer.domain;
+package tech.claudioed.customer.grpc;
 
 message CustomerFindRequest {
   string id = 1;
@@ -14,18 +14,23 @@ message CustomerFindResponse {
   string address = 5;
   string city = 6;
   string country = 7;
+  string email = 8;
 }
 
-
-message Cryptogram {
-
-  string number = 1;
-  string mask = 2;
-
+message CustomerCreateRequest {
+  string name = 1;
+  string lastName = 2;
+  string document = 3;
+  string address = 4;
+  string city = 5;
+  string country = 6;
+  string email = 7;
 }
 
 service CustomerService {
 
   rpc findCustomer (CustomerFindRequest) returns (CustomerFindResponse);
+
+  rpc createCustomer (CustomerCreateRequest) returns (CustomerFindResponse);
 
 }

@@ -29,13 +29,13 @@ class MainVerticle : AbstractVerticle() {
       override fun findCustomer(request: CustomerFindRequest,
                                 responseObserver: io.grpc.stub.StreamObserver<CustomerFindResponse>) {
         LOGGER.info("Receiving request to find customer...")
-        val query = JsonObject().put("_id", request.id)
+        val query = JsonObject().put("id", request.id)
         mongoClient.findOne("customers", query, null) {
           if (it.succeeded()) {
             LOGGER.info("Query executed successfully")
             val json = it.result()
             LOGGER.info("Converting Data")
-            val customerData = CustomerFindResponse.newBuilder().setId(json.getString("_id")).setName(json.getString("_name"))
+            val customerData = CustomerFindResponse.newBuilder().setId(json.getString("id")).setName(json.getString("name"))
               .setAddress(json.getString("address")).setDocument(json.getString("document"))
               .setCountry(json.getString("country")).setCity(json.getString("city"))
               .setEmail(json.getString("email")).setLastName(json.getString("lastName"))

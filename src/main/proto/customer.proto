@@ -15,6 +15,7 @@ message CustomerFindResponse {
   string city = 6;
   string country = 7;
   string email = 8;
+  string twoFactorEnabled = 9;
 }
 
 message CustomerCreateRequest {
@@ -25,6 +26,7 @@ message CustomerCreateRequest {
   string city = 5;
   string country = 6;
   string email = 7;
+  string twoFactorEnabled = 8;
 }
 
 service CustomerService {

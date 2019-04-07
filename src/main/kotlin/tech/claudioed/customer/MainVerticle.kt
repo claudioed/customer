@@ -39,6 +39,7 @@ class MainVerticle : AbstractVerticle() {
               .setAddress(json.getString("address")).setDocument(json.getString("document"))
               .setCountry(json.getString("country")).setCity(json.getString("city"))
               .setEmail(json.getString("email")).setLastName(json.getString("lastName"))
+              .setTwoFactorEnabled(json.getString("twoFactorEnabled","false"))
               .build()
             responseObserver.onNext(customerData)
             responseObserver.onCompleted()
@@ -51,9 +52,9 @@ class MainVerticle : AbstractVerticle() {
       override fun createCustomer(request: CustomerCreateRequest,
                                   responseObserver: io.grpc.stub.StreamObserver<CustomerFindResponse>) {
         LOGGER.info("Receiving request to create customer...")
-        val customer = Customer(id = UUID.randomUUID().toString(), name = request.name, lastName = request.lastName, city = request.city, country = request.country, address = request.address, document = request.document, email = request.email)
+        val customer = Customer(id = UUID.randomUUID().toString(), name = request.name, lastName = request.lastName, city = request.city, country = request.country, address = request.address, document = request.document, email = request.email,twoFactorEnabled = request.twoFactorEnabled)
         val data = JsonObject().put("id",customer.id).put("name",customer.name).put("lastName",customer.lastName).put("city",customer.city).put("country",customer.country)
-          .put("address",customer.address).put("document",customer.document).put("email",customer.email)
+          .put("address",customer.address).put("document",customer.document).put("email",customer.email).put("twoFactorEnabled",customer.twoFactorEnabled)
         mongoClient.insert("customers",data) {
           if(it.succeeded()){
             LOGGER.info("Customer saved successfully")
@@ -61,6 +62,7 @@ class MainVerticle : AbstractVerticle() {
               .setAddress(customer.address).setDocument(customer.document)
               .setCountry(customer.country).setCity(customer.city)
               .setEmail(customer.email).setLastName(customer.lastName)
+              .setTwoFactorEnabled(customer.twoFactorEnabled)
               .build()
             LOGGER.info("New customer was created.")
             responseObserver.onNext(response)
